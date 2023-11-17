@@ -1,52 +1,48 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import "./Login.css";
 import logo from "./DR TRACHTA CONSULTORIO PEDIATRICO.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Modal, Button } from "react-bootstrap";
 
-
 const LoginForm = () => {
-  // Estado para los campos del formulario
+  const navigate = useNavigate();
   const [documento, setDocumento] = useState({ tipo: "DNI", numero: "" });
   const [password, setPassword] = useState("");
-  const [agree, setAgree] = useState(false); // Estado inicial como falso para el checkbox
-
-  // Estado para la visibilidad de la contraseña y los modales
+  const [agree, setAgree] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [showTurnModal, setShowTurnModal] = useState(false);
 
-  // Funciones de manejo para mostrar y ocultar los modales
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const handlePrivacyModalClose = () => setShowPrivacyModal(false);
   const handlePrivacyModalShow = () => setShowPrivacyModal(true);
   const handleTurnModalClose = () => setShowTurnModal(false);
   const handleTurnModalShow = () => setShowTurnModal(true);
 
-  // Función de manejo para el envío del formulario
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Lógica para manejar el envío del formulario
+    // Aquí iría la lógica de validación y autenticación del formulario
+
+    // Redirigir al usuario a la página de turnos después del inicio de sesión
+    navigate('/turnos');
   };
 
   return (
     <>
-      {/* Navbar con logo */}
       <nav className="navbar navbar-expand-lg navbar-light" style={{ backgroundColor: "#0288d1" }}>
         <a className="navbar-brand" href="#">
           <img src={logo} alt="Logo" className="logo" />
         </a>
       </nav>
 
-      {/* Formulario de inicio de sesión */}
       <div className="container mt-5">
         <div className="row justify-content-center">
           <div className="col-lg-4 col-md-6">
             <form onSubmit={handleSubmit} className="bg-light p-4 shadow-sm">
               <h2 className="text-center mb-3" style={{ color: "#0288d1" }}>Iniciar Sesión</h2>
 
-              {/* Selector de Tipo de Documento */}
               <div className="form-floating mb-3">
                 <select
                   id="tipoDocumento"
@@ -60,10 +56,8 @@ const LoginForm = () => {
                   <option value="PASAPORTE">PASAPORTE</option>
                 </select>
                 <label htmlFor="tipoDocumento">Tipo de Documento</label>
-                
               </div>
 
-              {/* Número de Documento */}
               <div className="form-floating mb-3">
                 <input
                   type="number"
@@ -74,10 +68,9 @@ const LoginForm = () => {
                   onChange={(e) => setDocumento({ ...documento, numero: e.target.value })}
                   required
                 />
-                <label htmlFor="documentoNumero" >Número de Documento</label>
+                <label htmlFor="documentoNumero">Número de Documento</label>
               </div>
 
-              {/* Campo de Contraseña */}
               <div className="form-floating mb-3 position-relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -99,7 +92,6 @@ const LoginForm = () => {
                 </button>
               </div>
 
-              {/* Casilla de Condiciones y Políticas de Privacidad */}
               <div className="mb-3 form-check">
                 <input
                   type="checkbox"
@@ -116,7 +108,6 @@ const LoginForm = () => {
                 </label>
               </div>
 
-              {/* Botón de Ingresar */}
               <div className="d-grid gap-2 mb-3">
                 <button
                   className="btn"
@@ -135,14 +126,12 @@ const LoginForm = () => {
                 </a>
               </div>
 
-              {/* Texto de no tienes una cuenta */}
               <div className="text-center my-2">
                 <span className="fw-bold" style={{ color: "#6a6f72" }}>
                   ¿NO TIENES UNA CUENTA?
                 </span>
               </div>
 
-              {/* Enlaces para obtener un turno o crear una cuenta */}
               <div className="text-center">
                 <Button variant="link" onClick={handleTurnModalShow} className="fw-bold text-decoration-none" style={{ color: "#0288d1" }}>
                   Sacá un turno solo con tu documento
@@ -160,13 +149,12 @@ const LoginForm = () => {
         </div>
       </div>
 
-      {/* Modal para Políticas de Privacidad */}
       <Modal show={showPrivacyModal} onHide={handlePrivacyModalClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>Políticas de Privacidad</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* Contenido de las Políticas de Privacidad */}
+          {/* Aquí va el contenido de las Políticas de Privacidad */}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handlePrivacyModalClose}>
@@ -175,13 +163,11 @@ const LoginForm = () => {
         </Modal.Footer>
       </Modal>
 
-       {/* Modal para Sacar Turno */}
-       <Modal show={showTurnModal} onHide={handleTurnModalClose} centered>
+      <Modal show={showTurnModal} onHide={handleTurnModalClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>Sacá un turno con tu documento</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* Selector de Tipo de Documento */}
           <div className="form-floating mb-3">
             <select
               id="tipoDocumentoModal"
@@ -197,7 +183,6 @@ const LoginForm = () => {
             <label htmlFor="tipoDocumentoModal">Tipo de Documento</label>
           </div>
 
-          {/* Número de Documento */}
           <div className="form-floating mb-3">
             <input
               type="number"
