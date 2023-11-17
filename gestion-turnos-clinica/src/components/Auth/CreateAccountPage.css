@@ -1,0 +1,17 @@
+
+  
+  .text-right {
+    text-align: left;
+  }
+  
+  /* Ajusta los estilos de los elementos internos según sea necesario */
+  ul {
+    padding-left: 0;
+    list-style: none;
+  }
+  
+  ul li::before {
+    content: '•';
+    margin-right: 5px;
+    color: #0288d1; /* o cualquier color que prefieras */
+  }
