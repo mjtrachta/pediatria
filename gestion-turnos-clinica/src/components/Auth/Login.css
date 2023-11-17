@@ -1,0 +1,16 @@
+
+/* Estilos para el logo del sanatorio dentro del navbar */
+.logo {
+    height: 66px; /* Ajusta la altura según sea necesario */
+    margin-right: auto;  /* Remueve si no es necesario */
+}
+ 
+
+/* Estilos para los enlaces de acción */
+.action-link {
+    color: #0288d1;
+  }
+  
+
+
+ 
