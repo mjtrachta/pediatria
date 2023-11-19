@@ -1,0 +1,17 @@
+/* CalendarStyles.css */
+.react-calendar {
+    width: 350px;
+    max-width: 100%;
+    background-color: #fff;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    line-height: 1.125em;
+  }
+  
+  .react-calendar__tile--active,
+  .react-calendar__tile--active:enabled:hover,
+  .react-calendar__tile--active:enabled:focus {
+    background: #00BFFF;
+    color: white;
+  }
+  
