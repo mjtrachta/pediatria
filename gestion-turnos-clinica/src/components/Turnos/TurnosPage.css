@@ -4,3 +4,12 @@
     height: 100vh; /* Altura completa */
   }
   
+
+.times-list .card-body {
+  overflow-y: auto;
+  max-height: 400px; /* Ajusta esto según la altura deseada */
+}
+.table-scroll {
+  max-height: 400px; /* Ajusta esta altura según lo que necesites */
+  overflow-y: auto;  /* Activa el desplazamiento vertical */
+}

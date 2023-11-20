@@ -48,12 +48,7 @@ const TurnosPage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [availableTimes, setAvailableTimes] = useState([]);
 
-  // Define handleDateChange aquí
-  const handleDateChange = (date) => {
-    setSelectedDate(date); // actualiza la fecha seleccionada
-    loadAvailableTimes(date); // carga los horarios disponibles para la nueva fecha
-  };
-
+ 
 
    // Simula la carga de horarios disponibles para el día seleccionado
    const loadAvailableTimes = (date) => {
@@ -61,10 +56,36 @@ const TurnosPage = () => {
     // Establece los horarios disponibles en el estado
     const timesForSelectedDate = [
       { time: '10:30', id: 1 },
-      { time: '10:50', id: 2 },
+      { time: '10:40', id: 2 },
+      { time: '10:50', id: 3 },
+      { time: '11:00', id: 4 },
+      { time: '11:10', id: 5 },
+      { time: '11:20', id: 6 },
+      { time: '11:30', id: 7 },
+      { time: '11:40', id: 8 },
+      { time: '11:50', id: 9 },
+      { time: '12:00', id: 10 },
+      { time: '12:10', id: 11 },
+      { time: '12:10', id: 11 },
+      { time: '12:10', id: 11 },
+      { time: '12:10', id: 11 },
+      { time: '12:10', id: 11 },
+      { time: '12:10', id: 11 },
+      { time: '12:10', id: 11 },
+      { time: '12:10', id: 11 },
+      { time: '12:10', id: 11 },
+      { time: '12:10', id: 11 },
+
+
       // ...otros horarios...
     ];
     setAvailableTimes(timesForSelectedDate);
+  };
+
+   // Define handleDateChange aquí
+   const handleDateChange = (date) => {
+    setSelectedDate(date); // actualiza la fecha seleccionada
+    loadAvailableTimes(date); // carga los horarios disponibles para la nueva fecha
   };
 
    // Manejador para el cambio de fecha en el calendario
@@ -109,7 +130,7 @@ const TurnosPage = () => {
             </Nav>
           </Col>
 
-          <Col xs={9} md={4} className="mt-4">
+          <Col xs={9} md={3} className="mt-4">
             <Card>
               <Card.Body>
                 <br></br>
@@ -275,21 +296,54 @@ const TurnosPage = () => {
             </Card>
           </Col>
 
-          {showStepTwo && (
-            <Col xs={9} md={7} className="mt-4">
-              <Card>
-              <Card.Header>Horarios disponibles</Card.Header>
-              <Card.Body>
-            <h5>Paso 2 - Elige el turno</h5>
-            <Calendar
-              onChange={handleDateChange}
-              value={selectedDate}
-              // Aquí puedes añadir más props para personalizar tu calendario
-            />
-            {/* Aquí va el resto de tu contenido para el Paso 2 */}
-          </Card.Body>
-              </Card>
-            </Col>
+           {/* Asegúrate de que este Row no esté anidado dentro de otro Row */}
+           {showStepTwo && (
+            <>
+              <Col md={3} className="mt-4">
+                <Card>
+                  <Card.Body>
+                    <h5>Paso 2 - Elige el turno</h5>
+                    <Calendar
+                      onChange={handleDateChange}
+                      value={selectedDate}
+                      className="mb-3"
+                    />
+
+                    
+                  </Card.Body>
+                </Card>
+              </Col>
+
+              <Col md={3} className="mt-4">
+                <Card>
+                  <Card.Header>Horarios disponibles</Card.Header>
+                  <Card.Body>
+                    <div className="table-responsive">
+                      <table className="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>Hora</th>
+                            <th>Acción</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {availableTimes.map((timeSlot) => (
+                            <tr key={timeSlot.id}>
+                              <td>{timeSlot.time}</td>
+                              <td>
+                                <Button variant="primary" size="sm">
+                                  Reservar Turno
+                                </Button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </>
           )}
         </Row>
       </Container>
