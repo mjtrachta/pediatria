@@ -21,7 +21,6 @@ const GeneratePassword = () => {
       return;
     }
     // Implementar la lógica para activar la cuenta
-    // Limpiar los campos y errores después del envío exitoso
     setPassword("");
     setConfirmPassword("");
     setPasswordError("");
@@ -122,7 +121,14 @@ const GeneratePassword = () => {
 
                 {passwordError && <div className="text-danger mb-3">{passwordError}</div>}
 
-                <div className="d-flex justify-content-end">
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <a
+                    href="/" // Asegúrate de que esta ruta lleve de vuelta al LoginForm
+                    className="text-decoration-none"
+                    style={{ color: "#6a6f72" }}
+                  >
+                    VOLVER AL LOGIN
+                  </a>
                   <button
                     className="btn btn-primary"
                     type="submit"
@@ -141,3 +147,4 @@ const GeneratePassword = () => {
 };
 
 export default GeneratePassword;
+
