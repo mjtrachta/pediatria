@@ -15,3 +15,7 @@
     color: white;
   }
   
+  .table-container {
+    max-height: 300px; /* Altura máxima para el contenedor de la tabla */
+    overflow-y: auto; /* Habilita el desplazamiento vertical si el contenido excede la altura máxima */
+  }

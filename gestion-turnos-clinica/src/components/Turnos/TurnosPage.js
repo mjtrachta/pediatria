@@ -16,85 +16,85 @@ import 'react-calendar/dist/Calendar.css';
 import './CalendarStyles.css';
 
 const TurnosPage = () => {
-  const [stepOneData, setStepOneData] = useState({
-    nombreApellido: "",
-    obraSocial: "",
-    especialidad: "",
-    ubicacion: "",
-    medico: "",
-    tipoTurno: "",
-  });
+    const [stepOneData, setStepOneData] = useState({
+      nombreApellido: "",
+      obraSocial: "",
+      especialidad: "",
+      ubicacion: "",
+      medico: "",
+      tipoTurno: "",
+    });
+  
+    const [submitted, setSubmitted] = useState(false);
+    const nombreApellido = ["Juan Carlos"];
+    const obrasSociales = ["OSDE", "Swiss Medical", "Medicus"];
+    const especialidades = ["Clínica Médica", "Pediatría", "Cardiología"];
+    const ubicaciones = ["Sede Central", "Sede Norte"];
+    const medicosDisponibles = ["Dr. House", "Dr. Strange", "Dra. Cuddy"];
+    const tiposDeTurno = ["Consulta", "Control", "Urgencia"];
+  
+    const [showStepTwo, setShowStepTwo] = useState(false);
+  
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [availableTimes, setAvailableTimes] = useState([]);
+    const [timesVisible, setTimesVisible] = useState(false);
+  
+    const handleStepOneSubmit = (event) => {
+      event.preventDefault();
+      setSubmitted(true);
+  
+      if (Object.values(stepOneData).every((value) => value)) {
+        setShowStepTwo(true);
+      }
+    };
+  
+    const handleDateChange = (date) => {
+      setSelectedDate(date);
+      let timesForSelectedDate = [];
+      if (date.getDate() === 15) {
+        timesForSelectedDate = [
+          { time: '10:30', id: 1 },
+          { time: '11:00', id: 2 },
+          // ...otros horarios...
+        ];
+      } else if (date.getDate() === 16) {
+        timesForSelectedDate = [
+          { time: '09:00', id: 3 },
+          { time: '09:30', id: 4 },
+          { time: '09:31', id: 5 },
+          { time: '09:32', id: 6 },
+          { time: '09:33', id: 7 },
+          { time: '09:34', id: 8 },
+          { time: '09:35', id: 9 },
+          { time: '09:36', id: 10 },
+          { time: '09:37', id: 11 },
+          { time: '09:38', id: 12 },
+          { time: '09:39', id: 13 },
+          { time: '09:40', id: 14 },
+          { time: '09:41', id: 16 },
+          { time: '09:42', id: 17 },
+          { time: '09:43', id: 18 },
+          { time: '09:44', id: 19 },
+          { time: '09:45', id: 20 },
+          { time: '09:46', id: 21 },
+          { time: '09:47', id: 22 },
 
-  const [submitted, setSubmitted] = useState(false);
-  const nombreApellido = ["Juan Carlos"];
-  const obrasSociales = ["OSDE", "Swiss Medical", "Medicus"];
-  const especialidades = ["Clínica Médica", "Pediatría", "Cardiología"];
-  const ubicaciones = ["Sede Central", "Sede Norte"];
-  const medicosDisponibles = ["Dr. House", "Dr. Strange", "Dra. Cuddy"];
-  const tiposDeTurno = ["Consulta", "Control", "Urgencia"];
-
-  const [showStepTwo, setShowStepTwo] = useState(false);
-
-  const handleStepOneSubmit = (event) => {
-    event.preventDefault();
-    setSubmitted(true); // Marca el formulario como enviado
-
-    if (Object.values(stepOneData).every((value) => value)) {
-      setShowStepTwo(true);
-    }
-  };
 
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [availableTimes, setAvailableTimes] = useState([]);
-
- 
-
-   // Simula la carga de horarios disponibles para el día seleccionado
-   const loadAvailableTimes = (date) => {
-    // Suponiendo que esta función obtiene los horarios del servidor
-    // Establece los horarios disponibles en el estado
-    const timesForSelectedDate = [
-      { time: '10:30', id: 1 },
-      { time: '10:40', id: 2 },
-      { time: '10:50', id: 3 },
-      { time: '11:00', id: 4 },
-      { time: '11:10', id: 5 },
-      { time: '11:20', id: 6 },
-      { time: '11:30', id: 7 },
-      { time: '11:40', id: 8 },
-      { time: '11:50', id: 9 },
-      { time: '12:00', id: 10 },
-      { time: '12:10', id: 11 },
-      { time: '12:10', id: 11 },
-      { time: '12:10', id: 11 },
-      { time: '12:10', id: 11 },
-      { time: '12:10', id: 11 },
-      { time: '12:10', id: 11 },
-      { time: '12:10', id: 11 },
-      { time: '12:10', id: 11 },
-      { time: '12:10', id: 11 },
-      { time: '12:10', id: 11 },
-
-
-      // ...otros horarios...
-    ];
-    setAvailableTimes(timesForSelectedDate);
-  };
-
-   // Define handleDateChange aquí
-   const handleDateChange = (date) => {
-    setSelectedDate(date); // actualiza la fecha seleccionada
-    loadAvailableTimes(date); // carga los horarios disponibles para la nueva fecha
-  };
-
-   // Manejador para el cambio de fecha en el calendario
-   const handleChange = (e, field) => {
-    setStepOneData(prevState => ({
-      ...prevState,
-      [field]: e.target.value
-    }));
-  };
+          // ...otros horarios...
+        ];
+      }
+      setAvailableTimes(timesForSelectedDate);
+      setTimesVisible(timesForSelectedDate.length > 0);
+    };
+  
+    const handleChange = (e, field) => {
+      setStepOneData(prevState => ({
+        ...prevState,
+        [field]: e.target.value
+      }));
+    };
+  
 
   return (
     <>
@@ -130,7 +130,7 @@ const TurnosPage = () => {
             </Nav>
           </Col>
 
-          <Col xs={9} md={3} className="mt-4">
+          <Col  md={3} className="mt-4">
             <Card>
               <Card.Body>
                 <br></br>
@@ -296,7 +296,7 @@ const TurnosPage = () => {
             </Card>
           </Col>
 
-           {/* Asegúrate de que este Row no esté anidado dentro de otro Row */}
+           {/* Paso 2 */}
            {showStepTwo && (
             <>
               <Col md={3} className="mt-4">
@@ -308,41 +308,41 @@ const TurnosPage = () => {
                       value={selectedDate}
                       className="mb-3"
                     />
-
-                    
                   </Card.Body>
                 </Card>
               </Col>
 
-              <Col md={3} className="mt-4">
-                <Card>
-                  <Card.Header>Horarios disponibles</Card.Header>
-                  <Card.Body>
-                    <div className="table-responsive">
-                      <table className="table table-striped">
-                        <thead>
-                          <tr>
-                            <th>Hora</th>
-                            <th>Acción</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {availableTimes.map((timeSlot) => (
-                            <tr key={timeSlot.id}>
-                              <td>{timeSlot.time}</td>
-                              <td>
-                                <Button variant="primary" size="sm">
-                                  Reservar Turno
-                                </Button>
-                              </td>
+              {timesVisible && (
+                <Col md={3} className="mt-4">
+                  <Card>
+                    <Card.Header>Horarios disponibles</Card.Header>
+                    <Card.Body>
+                      <div className="table-container">
+                        <table className="table table-striped">
+                          <thead>
+                            <tr>
+                              <th>Hora</th>
+                              <th>Acción</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
+                          </thead>
+                          <tbody>
+                            {availableTimes.map((timeSlot) => (
+                              <tr key={timeSlot.id}>
+                                <td>{timeSlot.time}</td>
+                                <td>
+                                  <Button variant="primary" size="sm">
+                                    Reservar Turno
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              )}
             </>
           )}
         </Row>

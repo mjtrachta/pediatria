@@ -39,7 +39,10 @@ const CreateAccountPage = () => {
               </p>
 
               <p className="text-left">
-                <strong>Mientras que recupera su cuenta puede sacar un turno con su DOCUMENTO</strong>
+                <strong>
+                  Mientras que recupera su cuenta puede sacar un turno con su
+                  DOCUMENTO
+                </strong>
               </p>
 
               <form onSubmit={handleSubmit} className="bg-light p-4 shadow">

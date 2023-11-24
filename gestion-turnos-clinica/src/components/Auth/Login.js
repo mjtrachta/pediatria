@@ -155,6 +155,70 @@ const LoginForm = () => {
         </Modal.Header>
         <Modal.Body>
           {/* Aquí va el contenido de las Políticas de Privacidad */}
+          <ol>
+            <li>
+              El Consultorio Pediatrico Dr. Trachta se compromete activamente
+              con el resguardo de la intimidad de sus pacientes y usuarios. Se
+              hace saber que se han tomado y se trabaja continuamente en la toma
+              de las medidas necesarias para que los pacientes y usuarios del
+              sitio web se encuentren protegidos en el resguardo de la
+              información obrante en el sitio y la protección de sus datos
+              personales.
+            </li>
+            <li>
+              Esta política de privacidad se aplica exclusivamente a la
+              información ofrecida y recibida por los pacientes y usuarios del
+              sitio https://miportal.trachta.com/ y no a la de otras compañías u
+              organizaciones con los que el sitio contenga enlaces y sobre los
+              que El Consultorio Pediatrico Dr. Trachta no tiene control.
+            </li>
+            <li>
+              La información registrada en este sitio y la recopilada será
+              siempre ajustada a nuestra política privacidad.
+            </li>
+            <li>
+              Al acceder al portal de pacientes https://miportal.trachta.com/se
+              le requerirá información personal (DNI, Direccion de Correo
+              Electronico, Contraseña), la que es necesaria para poder brindar
+              los servicios ofrecidos en el sitio web. Se deja constancia de que
+              dicha información solo será recabada y almacenada, luego de que
+              sea aceptada por el usuario y/o paciente. Mediante esa aceptación,
+              nos autoriza a su uso para los fines indicados precedentemente. El
+              Consultorio Pediatrico Dr. Trachta garantiza la confidencialidad
+              de dicha información, no permitiendo que terceros ajenos a la
+              Institución accedan a la misma.
+            </li>
+            <li>
+              El Consultorio Pediatrico Dr. Trachta podrá recabar información
+              personal del paciente y/o usuario para identificarlo, brindarle
+              servicios, realizar encuestas, determinar datos demográficos de
+              los pacientes, socios y usuarios y procesar información
+              estadística y general.
+            </li>
+            <li>
+              El Consultorio Pediatrico Dr. Trachta no divulgará ni compartirá
+              información personal del paciente y/o usuario sin el
+              consentimiento expreso del mismo.
+            </li>
+            <li>
+              Sin perjuicio de las declaraciones anteriores, El Consultorio
+              Pediatrico Dr. Trachta podrá revelar información personal solo en
+              los casos en que exista obligación legal de hacerlo.
+            </li>
+            <li>
+              El Consultorio Pediatrico Dr. Trachta reconoce al paciente y/o
+              usuario -en tanto titular de los datos personales- el derecho a
+              solicitar y a obtener información sobre sus datos personales
+              incluidos en sus registros y a obtener la rectificación,
+              actualización y la supresión de los datos personales de los que
+              sea titular, todo ello de conformidad con lo establecido en la Ley
+              25.326 de protección de Datos Personales.
+            </li>
+            <li>
+              Al utilizar este sitio web está manifestando conocer nuestra
+              política de privacidad, la que se considera aceptada.
+            </li>
+          </ol>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handlePrivacyModalClose}>
