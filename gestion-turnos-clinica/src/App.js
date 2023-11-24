@@ -7,6 +7,8 @@ import ActivateAccount from './components/Auth/ActivateAccount';
 import PasswordRecoveryPage from './components/Auth/PasswordRecoveryPage';
 import TurnosPage from './components/Turnos/TurnosPage'
 import GeneratePassword from './components/Auth/GeneratePassword';
+import Form from './components/Auth/Form';
+import UpdateForm from './components/Auth/UpdateForm'
 import './App.css'; // Asegúrate de que este archivo exista o elimina esta línea si no lo vas a usar.
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -22,6 +24,8 @@ function App() {
           <Route path="/forgot-password" element={<PasswordRecoveryPage />} />
           <Route path="/turnos" element={<TurnosPage />} />
           <Route path="/generate-password" element={<GeneratePassword />} />
+          <Route path="/form" element={<Form />} />
+          <Route path="/updateform" element={<UpdateForm />} />
           // Aquí puedes añadir más rutas a otros componentes
         </Routes>
       </div>
