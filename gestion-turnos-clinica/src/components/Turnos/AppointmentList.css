@@ -1,5 +1,5 @@
 .calendar-wrapper {
-    max-width: 400px; /* Ajusta este valor según sea necesario */
+    max-width: 450px; /* Ajusta este valor según sea necesario */
     margin: auto; /* Esto centrará el div si no ocupa el ancho completo de su contenedor */
     background-color: #f8f9fa; /* Color de fondo gris */
    
@@ -12,10 +12,23 @@
     
   }
 
+  .calendar-wrapper {
+    /* Tus otros estilos para calendar-wrapper */
+    background-color: #ffffff; /* Fondo blanco para el contenido principal */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
+    margin-top: 2rem; /* Espacio arriba para no pegar con la navegación */
+    padding: 2rem; /* Espacio interior para el contenido */
+    border-radius: 8px; /* Bordes redondeados para el wrapper */
+  }
+  
+  
+
   .appointments-list {
     max-height: 400px; /* Ajusta esto según el tamaño de tu diseño */
     overflow-y: auto; /* Activa el desplazamiento vertical si es necesario */
-    /* Puedes agregar estilos adicionales aquí si lo necesitas */
+    background-color: #ffffff; /* Fondo blanco para la lista */
+  border: 1px solid #e0e0e0; /* Borde para la lista */
+  border-radius: 8px; /* Bordes redondeados para la lista */
   }
   
   /* Estilos adicionales para el scroll en la lista */
