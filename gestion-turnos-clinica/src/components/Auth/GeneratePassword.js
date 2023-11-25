@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import logo from "./DR TRACHTA CONSULTORIO PEDIATRICO.png";
-import "./CreateAccountPage.css";
+import logo from "../../components/assets/images/DR TRACHTA CONSULTORIO PEDIATRICO.png";
+
 
 const GeneratePassword = () => {
   const [password, setPassword] = useState("");

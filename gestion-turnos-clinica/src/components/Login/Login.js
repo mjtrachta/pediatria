@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import "./Login.css";
-import logo from "./DR TRACHTA CONSULTORIO PEDIATRICO.png";
+import logo from "../../components/assets/images/DR TRACHTA CONSULTORIO PEDIATRICO.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Modal, Button } from "react-bootstrap";

@@ -1,0 +1,49 @@
+.calendar-wrapper {
+    max-width: 400px; /* Ajusta este valor según sea necesario */
+    margin: auto; /* Esto centrará el div si no ocupa el ancho completo de su contenedor */
+    background-color: #f8f9fa; /* Color de fondo gris */
+   
+  }
+  
+  /* Estilos adicionales para sobrescribir los estilos predeterminados de react-calendar si es necesario */
+  .react-calendar {
+    width: 100%; /* Asegúrate de que el calendario ocupe todo el ancho de su contenedor */
+    border: none; /* Eliminar el borde si es necesario */
+    
+  }
+
+  .appointments-list {
+    max-height: 400px; /* Ajusta esto según el tamaño de tu diseño */
+    overflow-y: auto; /* Activa el desplazamiento vertical si es necesario */
+    /* Puedes agregar estilos adicionales aquí si lo necesitas */
+  }
+  
+  /* Estilos adicionales para el scroll en la lista */
+.appointments-list {
+    max-height: 400px; /* Altura máxima antes de que aparezca el scroll */
+    overflow-y: auto; /* Muestra el scroll verticalmente si es necesario */
+  }
+  
+  /* Colores de fondo para los diferentes estados de los turnos */
+  .atendido {
+    background-color: #9cdb9e; /* verde para turnos atendidos */
+  }
+  
+  .por-atender {
+    background-color: #9ba1e3; /* amarillo para turnos por atender */
+  }
+  
+  .cancelado {
+    background-color: #fdffcd; /* rojo para turnos cancelados */
+  }
+  
+  .ausente {
+    background-color: #ffc7c7; /* gris para turnos ausentes */
+  }
+  
+  /* Estilos para el contenedor del calendario y la lista */
+  .calendar-wrapper {
+    background-color: #eeeeee; /* gris de fondo para el marco */
+    border: 1px solid #bdbdbd; /* borde gris */
+  }
+  

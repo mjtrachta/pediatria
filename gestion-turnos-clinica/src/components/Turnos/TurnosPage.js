@@ -8,9 +8,8 @@ import {
   Form,
   Button,
   Card,
-  ListGroup,
 } from "react-bootstrap";
-import logo from "./DR TRACHTA CONSULTORIO PEDIATRICO.png";
+import logo from "../../components/assets/images/DR TRACHTA CONSULTORIO PEDIATRICO.png";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './CalendarStyles.css';

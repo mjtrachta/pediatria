@@ -1,7 +1,7 @@
 // CreateAccountPage.js
 import React, { useState } from "react";
-import logo from "./DR TRACHTA CONSULTORIO PEDIATRICO.png";
-import "./CreateAccountPage.css"; // Asegúrate de que este archivo contiene los estilos necesarios
+import logo from "../../components/assets/images/DR TRACHTA CONSULTORIO PEDIATRICO.png";
+
 
 const CreateAccountPage = () => {
   const [documento, setDocumento] = useState({ tipo: "DNI", numero: "" });

@@ -1,7 +1,7 @@
 // Form.js
 import React from "react";
-import logo from "./DR TRACHTA CONSULTORIO PEDIATRICO.png";
-import "./CreateAccountPage.css"; // Asegúrate de que este archivo contiene los estilos necesarios
+import logo from "../../components/assets/images/DR TRACHTA CONSULTORIO PEDIATRICO.png";
+// Asegúrate de que este archivo contiene los estilos necesarios
 
 const Form = () => {
   const handleSubmit = (event) => {
