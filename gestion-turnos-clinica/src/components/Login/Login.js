@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Asegúrate de que axios esté importado
 import "./Login.css";
 import logo from "../../components/assets/images/DR TRACHTA CONSULTORIO PEDIATRICO.png";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -8,25 +9,50 @@ import { Modal, Button } from "react-bootstrap";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const [documento, setDocumento] = useState({ tipo: "DNI", numero: "" });
+  const [documento, setDocumento] = useState({ tipo: "D.N.I.", numero: "" });
   const [password, setPassword] = useState("");
   const [agree, setAgree] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [showTurnModal, setShowTurnModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const handlePrivacyModalClose = () => setShowPrivacyModal(false);
   const handlePrivacyModalShow = () => setShowPrivacyModal(true);
   const handleTurnModalClose = () => setShowTurnModal(false);
   const handleTurnModalShow = () => setShowTurnModal(true);
+  console.log("Enviando al backend:", {
+    tipoDocumento: documento.tipo,
+    nroDocumento: documento.numero,
+    password: password
+});
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Aquí iría la lógica de validación y autenticación del formulario
-
-    // Redirigir al usuario a la página de turnos después del inicio de sesión
-    navigate('/turnos');
+    // Imprimir en consola los datos que se enviarán
+    console.log("Enviando al backend:", {
+      tipoDocumento: documento.tipo,
+      nroDocumento: documento.numero,
+      password: password
+  });
+    try {
+      const response = await axios.post('http://localhost:8081/login', {
+        tipoDocumento: documento.tipo,
+        nroDocumento: documento.numero,
+        password: password
+        
+      });
+      localStorage.setItem('token', response.data.token);
+      navigate('/turnos');
+       // Imprimir la respuesta en la consola
+    } catch (error) {
+      if (error.response) {
+        setErrorMessage(error.response.data.message);
+      } else {
+        setErrorMessage("Error al conectarse al servidor");
+      }
+    }
   };
 
   return (
@@ -108,6 +134,12 @@ const LoginForm = () => {
                 </label>
               </div>
 
+              {errorMessage && (
+                <div className="alert alert-danger" role="alert">
+                  {errorMessage}
+                </div>
+              )}
+
               <div className="d-grid gap-2 mb-3">
                 <button
                   className="btn"
@@ -117,13 +149,14 @@ const LoginForm = () => {
                 >
                   Ingresar
                 </button>
-                <a
+                <Button
+                  variant="link"
                   href="/forgot-password"
                   className="text-decoration-none d-block text-center mt-2 mb-4"
                   style={{ color: "#6a6f72" }}
                 >
                   ¿Olvidó su contraseña?
-                </a>
+                </Button>
               </div>
 
               <div className="text-center my-2">
@@ -156,68 +189,7 @@ const LoginForm = () => {
         <Modal.Body>
           {/* Aquí va el contenido de las Políticas de Privacidad */}
           <ol>
-            <li>
-              El Consultorio Pediatrico Dr. Trachta se compromete activamente
-              con el resguardo de la intimidad de sus pacientes y usuarios. Se
-              hace saber que se han tomado y se trabaja continuamente en la toma
-              de las medidas necesarias para que los pacientes y usuarios del
-              sitio web se encuentren protegidos en el resguardo de la
-              información obrante en el sitio y la protección de sus datos
-              personales.
-            </li>
-            <li>
-              Esta política de privacidad se aplica exclusivamente a la
-              información ofrecida y recibida por los pacientes y usuarios del
-              sitio https://miportal.trachta.com/ y no a la de otras compañías u
-              organizaciones con los que el sitio contenga enlaces y sobre los
-              que El Consultorio Pediatrico Dr. Trachta no tiene control.
-            </li>
-            <li>
-              La información registrada en este sitio y la recopilada será
-              siempre ajustada a nuestra política privacidad.
-            </li>
-            <li>
-              Al acceder al portal de pacientes https://miportal.trachta.com/se
-              le requerirá información personal (DNI, Direccion de Correo
-              Electronico, Contraseña), la que es necesaria para poder brindar
-              los servicios ofrecidos en el sitio web. Se deja constancia de que
-              dicha información solo será recabada y almacenada, luego de que
-              sea aceptada por el usuario y/o paciente. Mediante esa aceptación,
-              nos autoriza a su uso para los fines indicados precedentemente. El
-              Consultorio Pediatrico Dr. Trachta garantiza la confidencialidad
-              de dicha información, no permitiendo que terceros ajenos a la
-              Institución accedan a la misma.
-            </li>
-            <li>
-              El Consultorio Pediatrico Dr. Trachta podrá recabar información
-              personal del paciente y/o usuario para identificarlo, brindarle
-              servicios, realizar encuestas, determinar datos demográficos de
-              los pacientes, socios y usuarios y procesar información
-              estadística y general.
-            </li>
-            <li>
-              El Consultorio Pediatrico Dr. Trachta no divulgará ni compartirá
-              información personal del paciente y/o usuario sin el
-              consentimiento expreso del mismo.
-            </li>
-            <li>
-              Sin perjuicio de las declaraciones anteriores, El Consultorio
-              Pediatrico Dr. Trachta podrá revelar información personal solo en
-              los casos en que exista obligación legal de hacerlo.
-            </li>
-            <li>
-              El Consultorio Pediatrico Dr. Trachta reconoce al paciente y/o
-              usuario -en tanto titular de los datos personales- el derecho a
-              solicitar y a obtener información sobre sus datos personales
-              incluidos en sus registros y a obtener la rectificación,
-              actualización y la supresión de los datos personales de los que
-              sea titular, todo ello de conformidad con lo establecido en la Ley
-              25.326 de protección de Datos Personales.
-            </li>
-            <li>
-              Al utilizar este sitio web está manifestando conocer nuestra
-              política de privacidad, la que se considera aceptada.
-            </li>
+            {/* Contenido de las políticas de privacidad */}
           </ol>
         </Modal.Body>
         <Modal.Footer>

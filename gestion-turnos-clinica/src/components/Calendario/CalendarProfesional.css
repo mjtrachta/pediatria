@@ -1,0 +1,168 @@
+/* CalendarProfesional.css */
+
+/* Estilos para el contenedor del calendario */
+.calendar-wrapper {
+    max-width: 450px; /* Ajusta este valor según sea necesario */
+    margin: auto; /* Esto centrará el div si no ocupa el ancho completo de su contenedor */
+    background-color: #f8f9fa; /* Color de fondo */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estilos para el modal */
+.modal-header, .modal-body, .modal-footer {
+    background-color: #f8f9fa; /* Color de fondo */
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+/* Botón para agregar horario */
+.btn-primary {
+    background-color: #0288d1; /* Color personalizado */
+    border-color: #0261a4; /* Borde más oscuro */
+}
+
+.btn-primary:hover {
+    background-color: #0261a4; /* Color al pasar el ratón */
+}
+
+/* Formulario en el modal */
+.form-group label {
+    color: #333333; /* Color del texto */
+}
+
+.form-control {
+    border-radius: 5px; /* Bordes redondeados para los inputs */
+}
+
+/* Ajuste del calendario de react-calendar */
+.react-calendar {
+    border: none; /* Elimina el borde por defecto */
+}
+
+/* Estilos para la lista de turnos */
+.turnos-wrapper {
+    max-width: 450px;
+    margin: auto;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px; /* Espacio entre el calendario y la lista de turnos */
+  }
+  
+  .lista-turnos {
+    list-style: none;
+    padding: 0;
+  }
+
+  
+
+  .turnos-disponibles-wrapper {
+    max-width: 450px;
+    margin: auto;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+  
+  .lista-turnos-container {
+    max-height: 400px; /* Altura máxima antes de que aparezca el scroll */
+    overflow-y: auto; /* Habilita scroll vertical si es necesario */
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px;
+  }
+  
+  /* Estilos para los items de la lista */
+  .turno {
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .disponible {
+    background-color: #9cdb9e; /* verde para turnos disponibles */
+  }
+  
+  .no-disponible {
+    background-color: #ffc7c7; /* rojo para turnos no disponibles */
+  }
+  
+  /* Estilos existentes... */
+
+/* Estilos para el modal de agregar horario */
+.modal-title {
+    color: #333; /* Color del texto en el título del modal */
+  }
+  
+  /* Botones de acciones de turnos */
+  .turnos-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .turnos-actions .btn {
+    margin: 0 5px; /* Espaciado entre botones */
+  }
+  
+  /* Estilos para los botones 'Seleccionar Todos', 'Deseleccionar Todos' y 'Eliminar Seleccionados' */
+  .btn-secondary, .btn-danger {
+    color: #fff;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d; /* Color de fondo para botones secundarios */
+    border-color: #6c757d; /* Color del borde para botones secundarios */
+  }
+  
+  .btn-secondary:hover {
+    background-color: #5a6268; /* Color de fondo al pasar el ratón por botones secundarios */
+  }
+  
+  .btn-danger {
+    background-color: #dc3545; /* Color de fondo para botones de peligro */
+    border-color: #dc3545; /* Color del borde para botones de peligro */
+  }
+  
+  .btn-danger:hover {
+    background-color: #c82333; /* Color de fondo al pasar el ratón por botones de peligro */
+  }
+  
+  /* Estilos para turnos seleccionados */
+  .turno.seleccionado {
+    background-color: #d1ecf1; /* Color de fondo para turnos seleccionados */
+    border: 1px solid #bee5eb; /* Borde para turnos seleccionados */
+  }
+  
+  /* Ajustes para la lista de turnos */
+  .lista-turnos-container {
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 15px;
+  }
+  
+  .lista-turnos li {
+    cursor: pointer; /* Cambiar el cursor al pasar sobre los turnos */
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease; /* Transición suave al cambiar de color */
+  }
+  
+  .lista-turnos li:hover {
+    background-color: #f8f9fa; /* Color al pasar el ratón sobre un turno */
+  }
+  
+  .boton-centrado {
+    display: flex;
+    justify-content: center; /* Centra el botón horizontalmente */
+    margin-top: 20px; /* Ajusta el espacio superior según necesites */
+  }
+  

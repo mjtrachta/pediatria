@@ -11,8 +11,10 @@ import Form from './components/Patients/Form';
 import UpdateForm from './components/Patients/UpdateForm'
 import DeleteForm from './components/Patients/DeleteForm';
 import AppointmentList from './components/Turnos/AppointmentList'
+import CalendarProfesional from './components/Calendario/CalendarProfesional';
 import './App.css'; // Asegúrate de que este archivo exista o elimina esta línea si no lo vas a usar.
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Calendar from 'react-calendar';
 
 function App() {
   return (
@@ -30,6 +32,7 @@ function App() {
           <Route path="/updateform" element={<UpdateForm />} />
           <Route path="/deleteform" element={<DeleteForm />} />
           <Route path="/appointment" element={<AppointmentList />} />
+          <Route path="/calendar" element={<CalendarProfesional />} />
           // Aquí puedes añadir más rutas a otros componentes
         </Routes>
       </div>
