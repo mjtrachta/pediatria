@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Navbar,
   Nav,
@@ -13,10 +13,12 @@ import logo from "../../components/assets/images/DR TRACHTA CONSULTORIO PEDIATRI
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './CalendarStyles.css';
+import axios from "axios";
 
 const TurnosPage = () => {
     const [stepOneData, setStepOneData] = useState({
       nombreApellido: "",
+      listaNombresApellidos: [], // Nueva lista para almacenar nombres y apellidos
       obraSocial: "",
       especialidad: "",
       ubicacion: "",
@@ -61,26 +63,7 @@ const TurnosPage = () => {
           { time: '09:00', id: 3 },
           { time: '09:30', id: 4 },
           { time: '09:31', id: 5 },
-          { time: '09:32', id: 6 },
-          { time: '09:33', id: 7 },
-          { time: '09:34', id: 8 },
-          { time: '09:35', id: 9 },
-          { time: '09:36', id: 10 },
-          { time: '09:37', id: 11 },
-          { time: '09:38', id: 12 },
-          { time: '09:39', id: 13 },
-          { time: '09:40', id: 14 },
-          { time: '09:41', id: 16 },
-          { time: '09:42', id: 17 },
-          { time: '09:43', id: 18 },
-          { time: '09:44', id: 19 },
-          { time: '09:45', id: 20 },
-          { time: '09:46', id: 21 },
-          { time: '09:47', id: 22 },
 
-
-
-          // ...otros horarios...
         ];
       }
       setAvailableTimes(timesForSelectedDate);
@@ -93,6 +76,47 @@ const TurnosPage = () => {
         [field]: e.target.value
       }));
     };
+
+
+
+
+
+
+    const obtenerTokenJWT = () => {
+      // Recupera el token JWT del localStorage
+      return localStorage.getItem('token');
+    };
+  
+    const obtenerDatosPaciente = async () => {
+      try {
+        const token = obtenerTokenJWT();
+        const headers = {
+          'Authorization': `Bearer ${token}`
+        };
+  
+        const response = await axios.get('http://localhost:8081/pacientes/buscar', { headers: headers });
+        if (response.data) {
+          const nombreCompleto = response.data.nombre + " " + response.data.apellido;
+          setStepOneData(prevState => ({
+            ...prevState,
+            listaNombresApellidos: [nombreCompleto]
+          }));
+        }
+      } catch (error) {
+        console.error('Error al obtener datos del paciente:', error);
+      }
+    };
+  
+    useEffect(() => {
+      obtenerDatosPaciente();
+    }, []);
+
+
+
+
+
+
+
   
 
   return (
@@ -139,31 +163,40 @@ const TurnosPage = () => {
                 </p>
                 <br></br>
                 <Form onSubmit={handleStepOneSubmit}>
+
+
+
+
+
+
                   {/* Nombre y Apellido */}
-                  <Form.Group className="mb-4">
-                    <Form.Control
-                      as="select"
-                      className={`form-select ${
-                        submitted && !stepOneData.nombreApellido
-                          ? "is-invalid"
-                          : ""
-                      }`}
-                      onChange={(e) => handleChange(e, "nombreApellido")}
-                      value={stepOneData.nombreApellido}
-                    >
-                      <option value="">Nombre y Apellido</option>
-                      {nombreApellido.map((nombre, index) => (
-                        <option key={index} value={nombre}>
-                          {nombre}
-                        </option>
-                      ))}
-                    </Form.Control>
-                    {submitted && !stepOneData.nombreApellido && (
-                      <div className="invalid-feedback">
-                        Por favor, selecciona un nombre y apellido.
-                      </div>
-                    )}
-                  </Form.Group>
+      <Form.Group className="mb-4">
+        <Form.Control
+          as="select"
+          className={`form-select ${submitted && !stepOneData.nombreApellido ? "is-invalid" : ""}`}
+          onChange={(e) => handleChange(e, "nombreApellido")}
+          value={stepOneData.nombreApellido}
+        >
+          <option value="">Nombre y Apellido</option>
+          {stepOneData.listaNombresApellidos.map((nombre, index) => (
+            <option key={index} value={nombre}>
+              {nombre}
+            </option>
+          ))}
+        </Form.Control>
+        {submitted && !stepOneData.nombreApellido && (
+          <div className="invalid-feedback">
+            Por favor, selecciona un nombre y apellido.
+          </div>
+        )}
+      </Form.Group>
+
+
+
+
+
+
+
 
                   {/* Obra Social */}
                   <Form.Group className="mb-4">
