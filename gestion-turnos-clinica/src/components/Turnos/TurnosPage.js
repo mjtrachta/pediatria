@@ -10,114 +10,113 @@ import {
   Card,
 } from "react-bootstrap";
 import logo from "../../components/assets/images/DR TRACHTA CONSULTORIO PEDIATRICO.png";
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import './CalendarStyles.css';
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import "./CalendarStyles.css";
 import axios from "axios";
 
 const TurnosPage = () => {
-    const [stepOneData, setStepOneData] = useState({
-      nombreApellido: "",
-      listaNombresApellidos: [], // Nueva lista para almacenar nombres y apellidos
-      obraSocial: "",
-      especialidad: "",
-      ubicacion: "",
-      medico: "",
-      tipoTurno: "",
-    });
-  
-    const [submitted, setSubmitted] = useState(false);
-    const nombreApellido = ["Juan Carlos"];
-    const obrasSociales = ["OSDE", "Swiss Medical", "Medicus"];
-    const especialidades = ["Clínica Médica", "Pediatría", "Cardiología"];
-    const ubicaciones = ["Sede Central", "Sede Norte"];
-    const medicosDisponibles = ["Dr. House", "Dr. Strange", "Dra. Cuddy"];
-    const tiposDeTurno = ["Consulta", "Control", "Urgencia"];
-  
-    const [showStepTwo, setShowStepTwo] = useState(false);
-  
-    const [selectedDate, setSelectedDate] = useState(null);
-    const [availableTimes, setAvailableTimes] = useState([]);
-    const [timesVisible, setTimesVisible] = useState(false);
-  
-    const handleStepOneSubmit = (event) => {
-      event.preventDefault();
-      setSubmitted(true);
-  
-      if (Object.values(stepOneData).every((value) => value)) {
-        setShowStepTwo(true);
+  const [stepOneData, setStepOneData] = useState({
+    listaNombresApellidos: [], // Nueva lista para almacenar nombres y apellidos
+    listarObrasSociales: [],
+    especialidad: "",
+    ubicacion: "",
+    medico: "",
+    tipoTurno: "",
+  });
+
+  const [submitted, setSubmitted] = useState(false);
+  //const obrasSociales = ["OSDE", "Swiss Medical", "Medicus"];
+  const especialidades = ["Clínica Médica", "Pediatría", "Cardiología"];
+  const ubicaciones = ["Sede Central", "Sede Norte"];
+  const medicosDisponibles = ["Dr. House", "Dr. Strange", "Dra. Cuddy"];
+  const tiposDeTurno = ["Consulta", "Control", "Urgencia"];
+
+  const [showStepTwo, setShowStepTwo] = useState(false);
+
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [availableTimes, setAvailableTimes] = useState([]);
+  const [timesVisible, setTimesVisible] = useState(false);
+
+  const handleStepOneSubmit = (event) => {
+    event.preventDefault();
+    setSubmitted(true);
+
+    if (Object.values(stepOneData).every((value) => value)) {
+      setShowStepTwo(true);
+    }
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    let timesForSelectedDate = [];
+    if (date.getDate() === 15) {
+      timesForSelectedDate = [
+        { time: "10:30", id: 1 },
+        { time: "11:00", id: 2 },
+        // ...otros horarios...
+      ];
+    } else if (date.getDate() === 16) {
+      timesForSelectedDate = [
+        { time: "09:00", id: 3 },
+        { time: "09:30", id: 4 },
+        { time: "09:31", id: 5 },
+      ];
+    }
+    setAvailableTimes(timesForSelectedDate);
+    setTimesVisible(timesForSelectedDate.length > 0);
+  };
+
+  const handleChange = (e, field) => {
+    setStepOneData((prevState) => ({
+      ...prevState,
+      [field]: e.target.value,
+    }));
+  };
+
+  const obtenerTokenJWT = () => {
+    // Recupera el token JWT del localStorage
+    return localStorage.getItem("token");
+  };
+
+  const obtenerDatosPaciente = async () => {
+    try {
+      const token = obtenerTokenJWT();
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      const response = await axios.get(
+        "http://localhost:8081/pacientes/buscar",
+        { headers: headers }
+      );
+      if (response.data) {
+        const nombreCompleto =
+          response.data.nombre + " " + response.data.apellido;
+        setStepOneData((prevState) => ({
+          ...prevState,
+          listaNombresApellidos: [nombreCompleto],
+        }));
       }
-    };
-  
-    const handleDateChange = (date) => {
-      setSelectedDate(date);
-      let timesForSelectedDate = [];
-      if (date.getDate() === 15) {
-        timesForSelectedDate = [
-          { time: '10:30', id: 1 },
-          { time: '11:00', id: 2 },
-          // ...otros horarios...
-        ];
-      } else if (date.getDate() === 16) {
-        timesForSelectedDate = [
-          { time: '09:00', id: 3 },
-          { time: '09:30', id: 4 },
-          { time: '09:31', id: 5 },
-
-        ];
+      // Obtener obra social del paciente
+      const obraSocialPaciente = await axios.get(
+        "http://localhost:8081/pacientes/obra-social",
+        { headers }
+      );
+      if (obraSocialPaciente.data) {
+        setStepOneData((prevState) => ({
+          ...prevState,
+          obraSocial: obraSocialPaciente.data.obraSocial,
+        }));
       }
-      setAvailableTimes(timesForSelectedDate);
-      setTimesVisible(timesForSelectedDate.length > 0);
-    };
-  
-    const handleChange = (e, field) => {
-      setStepOneData(prevState => ({
-        ...prevState,
-        [field]: e.target.value
-      }));
-    };
+    } catch (error) {
+      console.error("Error al obtener datos del paciente:", error);
+    }
+  };
 
-
-
-
-
-
-    const obtenerTokenJWT = () => {
-      // Recupera el token JWT del localStorage
-      return localStorage.getItem('token');
-    };
-  
-    const obtenerDatosPaciente = async () => {
-      try {
-        const token = obtenerTokenJWT();
-        const headers = {
-          'Authorization': `Bearer ${token}`
-        };
-  
-        const response = await axios.get('http://localhost:8081/pacientes/buscar', { headers: headers });
-        if (response.data) {
-          const nombreCompleto = response.data.nombre + " " + response.data.apellido;
-          setStepOneData(prevState => ({
-            ...prevState,
-            listaNombresApellidos: [nombreCompleto]
-          }));
-        }
-      } catch (error) {
-        console.error('Error al obtener datos del paciente:', error);
-      }
-    };
-  
-    useEffect(() => {
-      obtenerDatosPaciente();
-    }, []);
-
-
-
-
-
-
-
-  
+  useEffect(() => {
+    obtenerDatosPaciente();
+  }, []);
 
   return (
     <>
@@ -153,7 +152,7 @@ const TurnosPage = () => {
             </Nav>
           </Col>
 
-          <Col  md={3} className="mt-4">
+          <Col md={3} className="mt-4">
             <Card>
               <Card.Body>
                 <br></br>
@@ -168,59 +167,56 @@ const TurnosPage = () => {
 
 
 
-
                   {/* Nombre y Apellido */}
-      <Form.Group className="mb-4">
-        <Form.Control
-          as="select"
-          className={`form-select ${submitted && !stepOneData.nombreApellido ? "is-invalid" : ""}`}
-          onChange={(e) => handleChange(e, "nombreApellido")}
-          value={stepOneData.nombreApellido}
-        >
-          <option value="">Nombre y Apellido</option>
-          {stepOneData.listaNombresApellidos.map((nombre, index) => (
-            <option key={index} value={nombre}>
-              {nombre}
-            </option>
-          ))}
-        </Form.Control>
-        {submitted && !stepOneData.nombreApellido && (
-          <div className="invalid-feedback">
-            Por favor, selecciona un nombre y apellido.
-          </div>
-        )}
-      </Form.Group>
-
-
-
-
-
-
-
-
-                  {/* Obra Social */}
                   <Form.Group className="mb-4">
                     <Form.Control
                       as="select"
                       className={`form-select ${
-                        submitted && !stepOneData.obraSocial ? "is-invalid" : ""
+                        submitted && !stepOneData.nombreApellido
+                          ? "is-invalid"
+                          : ""
                       }`}
-                      onChange={(e) => handleChange(e, "obraSocial")}
-                      value={stepOneData.obraSocial}
+                      onChange={(e) => handleChange(e, "nombreApellido")}
+                      value={stepOneData.nombreApellido}
                     >
-                      <option value="">Obra Social</option>
-                      {obrasSociales.map((obraSocial, index) => (
-                        <option key={index} value={obraSocial}>
-                          {obraSocial}
-                        </option>
-                      ))}
+                      <option value="">Nombre y Apellido</option>
+                      {stepOneData.listaNombresApellidos.map(
+                        (nombre, index) => (
+                          <option key={index} value={nombre}>
+                            {nombre}
+                          </option>
+                        )
+                      )}
                     </Form.Control>
-                    {submitted && !stepOneData.obraSocial && (
+                    {submitted && !stepOneData.nombreApellido && (
                       <div className="invalid-feedback">
-                        Por favor, selecciona una obra social.
+                        Por favor, selecciona un nombre y apellido.
                       </div>
                     )}
                   </Form.Group>
+
+                  {/* Obra Social */}
+                  <Form.Group className="mb-4">
+            <Form.Control
+              as="select"
+              className={`form-select ${submitted && !stepOneData.obraSocial ? "is-invalid" : ""}`}
+              onChange={(e) => handleChange(e, "obraSocial")}
+              value={stepOneData.obraSocial}
+            >
+              <option value="">{stepOneData.obraSocial ? stepOneData.obraSocial : "Obra Social"}</option>
+              {/* Si ya se obtuvo la obra social del backend, mostrarla aquí */}
+              {stepOneData.listarObrasSociales && (
+                <option value={stepOneData.obraSocial}>
+                  {stepOneData.obraSocial}
+                </option>
+              )}
+            </Form.Control>
+            {submitted && !stepOneData.obraSocial && (
+              <div className="invalid-feedback">
+                Por favor, selecciona una obra social.
+              </div>
+            )}
+        </Form.Group>
 
                   {/* Especialidad */}
                   <Form.Group className="mb-4">
@@ -328,8 +324,8 @@ const TurnosPage = () => {
             </Card>
           </Col>
 
-           {/* Paso 2 */}
-           {showStepTwo && (
+          {/* Paso 2 */}
+          {showStepTwo && (
             <>
               <Col md={3} className="mt-4">
                 <Card>
