@@ -18,7 +18,7 @@ import axios from "axios";
 const TurnosPage = () => {
   const [stepOneData, setStepOneData] = useState({
     listaNombresApellidos: [], // Nueva lista para almacenar nombres y apellidos
-    listarObrasSociales: [],
+    // obraSocial
     especialidad: "",
     ubicacion: "",
     medico: "",
@@ -26,11 +26,12 @@ const TurnosPage = () => {
   });
 
   const [submitted, setSubmitted] = useState(false);
-  //const obrasSociales = ["OSDE", "Swiss Medical", "Medicus"];
-  const especialidades = ["Clínica Médica", "Pediatría", "Cardiología"];
-  const ubicaciones = ["Sede Central", "Sede Norte"];
-  const medicosDisponibles = ["Dr. House", "Dr. Strange", "Dra. Cuddy"];
-  const tiposDeTurno = ["Consulta", "Control", "Urgencia"];
+  const especialidades = ["Clínica Médica", "Pediatria", "Cardiología"];
+  const ubicaciones = ["Clínica de la Merced "];
+
+  const tiposDeTurno = ["CONSULTA", "CONSULTA TELEMEDICINA"];
+
+  const [medicosPorEspecialidad, setMedicosPorEspecialidad] = useState([]);
 
   const [showStepTwo, setShowStepTwo] = useState(false);
 
@@ -67,11 +68,32 @@ const TurnosPage = () => {
     setTimesVisible(timesForSelectedDate.length > 0);
   };
 
-  const handleChange = (e, field) => {
+  const handleChange = async (e, field) => {
+    const value = e.target.value;
     setStepOneData((prevState) => ({
       ...prevState,
-      [field]: e.target.value,
+      [field]: value,
     }));
+
+    if (field === "especialidad") {
+      try {
+        const token = obtenerTokenJWT();
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+
+        const response = await axios.get(
+          `http://localhost:8081/profesionales/especialidad/${value}`,
+          { headers: headers }
+        );
+
+        console.log("Respuesta de la API:", response.data);
+
+        setMedicosPorEspecialidad(response.data || []);
+      } catch (error) {
+        console.error("Error al obtener médicos por especialidad:", error);
+      }
+    }
   };
 
   const obtenerTokenJWT = () => {
@@ -98,24 +120,38 @@ const TurnosPage = () => {
           listaNombresApellidos: [nombreCompleto],
         }));
       }
-      // Obtener obra social del paciente
-      const obraSocialPaciente = await axios.get(
-        "http://localhost:8081/pacientes/obra-social",
-        { headers }
-      );
-      if (obraSocialPaciente.data) {
-        setStepOneData((prevState) => ({
-          ...prevState,
-          obraSocial: obraSocialPaciente.data.obraSocial,
-        }));
-      }
     } catch (error) {
       console.error("Error al obtener datos del paciente:", error);
     }
   };
 
+  const obtenerObraSocial = async () => {
+    try {
+      const token = obtenerTokenJWT();
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      const response = await axios.get(
+        "http://localhost:8081/pacientes/obra-social",
+        { headers: headers }
+      );
+
+      if (response.data) {
+        const obraSocial = response.data.nombreObraSocial;
+        setStepOneData((prevState) => ({
+          ...prevState,
+          obraSocial: obraSocial,
+        }));
+      }
+    } catch (error) {
+      console.error("Error al obtener la obra social:", error);
+    }
+  };
+
   useEffect(() => {
     obtenerDatosPaciente();
+    obtenerObraSocial();
   }, []);
 
   return (
@@ -162,24 +198,21 @@ const TurnosPage = () => {
                 </p>
                 <br></br>
                 <Form onSubmit={handleStepOneSubmit}>
-
-
-
-
-
                   {/* Nombre y Apellido */}
                   <Form.Group className="mb-4">
                     <Form.Control
                       as="select"
                       className={`form-select ${
-                        submitted && !stepOneData.nombreApellido
+                        stepOneData.listaNombresApellidos.length === 0
                           ? "is-invalid"
                           : ""
                       }`}
                       onChange={(e) => handleChange(e, "nombreApellido")}
                       value={stepOneData.nombreApellido}
                     >
-                      <option value="">Nombre y Apellido</option>
+                      <option value="" disabled>
+                        Seleccione Nombre y Apellido
+                      </option>
                       {stepOneData.listaNombresApellidos.map(
                         (nombre, index) => (
                           <option key={index} value={nombre}>
@@ -188,7 +221,7 @@ const TurnosPage = () => {
                         )
                       )}
                     </Form.Control>
-                    {submitted && !stepOneData.nombreApellido && (
+                    {stepOneData.listaNombresApellidos.length === 0 && (
                       <div className="invalid-feedback">
                         Por favor, selecciona un nombre y apellido.
                       </div>
@@ -197,26 +230,29 @@ const TurnosPage = () => {
 
                   {/* Obra Social */}
                   <Form.Group className="mb-4">
-            <Form.Control
-              as="select"
-              className={`form-select ${submitted && !stepOneData.obraSocial ? "is-invalid" : ""}`}
-              onChange={(e) => handleChange(e, "obraSocial")}
-              value={stepOneData.obraSocial}
-            >
-              <option value="">{stepOneData.obraSocial ? stepOneData.obraSocial : "Obra Social"}</option>
-              {/* Si ya se obtuvo la obra social del backend, mostrarla aquí */}
-              {stepOneData.listarObrasSociales && (
-                <option value={stepOneData.obraSocial}>
-                  {stepOneData.obraSocial}
-                </option>
-              )}
-            </Form.Control>
-            {submitted && !stepOneData.obraSocial && (
-              <div className="invalid-feedback">
-                Por favor, selecciona una obra social.
-              </div>
-            )}
-        </Form.Group>
+                    <Form.Control
+                      as="select"
+                      className={`form-select ${
+                        submitted && !stepOneData.obraSocial ? "is-invalid" : ""
+                      }`}
+                      onChange={(e) => handleChange(e, "obraSocial")}
+                      value={stepOneData.obraSocial || ""}
+                    >
+                      <option value="" disabled>
+                        Seleccione una obra social
+                      </option>
+                      {stepOneData.obraSocial && (
+                        <option key="1" value={stepOneData.obraSocial}>
+                          {stepOneData.obraSocial}
+                        </option>
+                      )}
+                    </Form.Control>
+                    {submitted && !stepOneData.obraSocial && (
+                      <div className="invalid-feedback">
+                        Por favor, seleccione una obra social.
+                      </div>
+                    )}
+                  </Form.Group>
 
                   {/* Especialidad */}
                   <Form.Group className="mb-4">
@@ -230,7 +266,9 @@ const TurnosPage = () => {
                       onChange={(e) => handleChange(e, "especialidad")}
                       value={stepOneData.especialidad}
                     >
-                      <option value="">Especialidad</option>
+                      <option value="" disabled>
+                        Seleccione una especialidad
+                      </option>
                       {especialidades.map((especialidad, index) => (
                         <option key={index} value={especialidad}>
                           {especialidad}
@@ -279,9 +317,12 @@ const TurnosPage = () => {
                       value={stepOneData.medico}
                     >
                       <option value="">Médico</option>
-                      {medicosDisponibles.map((medico, index) => (
-                        <option key={index} value={medico}>
-                          {medico}
+                      {medicosPorEspecialidad.map((medico, index) => (
+                        <option
+                          key={index}
+                          value={`${medico.nombre} ${medico.apellido}`}
+                        >
+                          {`${medico.nombre} ${medico.apellido}`}
                         </option>
                       ))}
                     </Form.Control>
