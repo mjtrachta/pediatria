@@ -12,13 +12,14 @@ import {
 import logo from "../../components/assets/images/DR TRACHTA CONSULTORIO PEDIATRICO.png";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import "./CalendarStyles.css";
 import axios from "axios";
+import { format } from "date-fns";
+
+const formatoFecha = (fecha) => format(new Date(fecha), "yyyy-MM-dd");
 
 const TurnosPage = () => {
   const [stepOneData, setStepOneData] = useState({
-    listaNombresApellidos: [], // Nueva lista para almacenar nombres y apellidos
-    // obraSocial
+    listaNombresApellidos: [],
     especialidad: "",
     ubicacion: "",
     medico: "",
@@ -26,46 +27,50 @@ const TurnosPage = () => {
   });
 
   const [submitted, setSubmitted] = useState(false);
-  const especialidades = ["Clínica Médica", "Pediatria", "Cardiología"];
-  const ubicaciones = ["Clínica de la Merced "];
-
-  const tiposDeTurno = ["CONSULTA", "CONSULTA TELEMEDICINA"];
+  const [especialidades, setEspecialidades] = useState(["Pediatria", "otra"]);
+  const [ubicaciones, setUbicaciones] = useState(["Clinica de la Merced"]);
+  const [tiposDeTurno, setTiposDeTurno] = useState(["CONSULTA"]);
 
   const [medicosPorEspecialidad, setMedicosPorEspecialidad] = useState([]);
 
   const [showStepTwo, setShowStepTwo] = useState(false);
-
   const [selectedDate, setSelectedDate] = useState(null);
-  const [availableTimes, setAvailableTimes] = useState([]);
-  const [timesVisible, setTimesVisible] = useState(false);
+  const [turnosDisponibles, setTurnosDisponibles] = useState([]);
+  const [originalTurnos, setOriginalTurnos] = useState([]);
 
-  const handleStepOneSubmit = (event) => {
+  const handleStepOneSubmit = async (event) => {
     event.preventDefault();
     setSubmitted(true);
 
     if (Object.values(stepOneData).every((value) => value)) {
+      try {
+        const { medico, ubicacion } = stepOneData;
+        const [nombreProfesional, apellidoProfesional] = medico.split(" ");
+
+        const token = obtenerTokenJWT();
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+
+        const response = await axios.get(
+          `http://localhost:8081/turnos/consultar2/${nombreProfesional}/${apellidoProfesional}/${ubicacion}`,
+          { headers: headers }
+        );
+
+        console.log("Respuesta de la API para turnos:", response.data);
+
+        const datesWithTurnos = response.data.map(
+          (turno) => new Date(turno.fechaInicio)
+        );
+
+        setOriginalTurnos(response.data || []);
+
+        setTurnosDisponibles(response.data || []);
+      } catch (error) {
+        console.error("Error al obtener turnos:", error);
+      }
       setShowStepTwo(true);
     }
-  };
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    let timesForSelectedDate = [];
-    if (date.getDate() === 15) {
-      timesForSelectedDate = [
-        { time: "10:30", id: 1 },
-        { time: "11:00", id: 2 },
-        // ...otros horarios...
-      ];
-    } else if (date.getDate() === 16) {
-      timesForSelectedDate = [
-        { time: "09:00", id: 3 },
-        { time: "09:30", id: 4 },
-        { time: "09:31", id: 5 },
-      ];
-    }
-    setAvailableTimes(timesForSelectedDate);
-    setTimesVisible(timesForSelectedDate.length > 0);
   };
 
   const handleChange = async (e, field) => {
@@ -97,7 +102,6 @@ const TurnosPage = () => {
   };
 
   const obtenerTokenJWT = () => {
-    // Recupera el token JWT del localStorage
     return localStorage.getItem("token");
   };
 
@@ -153,6 +157,26 @@ const TurnosPage = () => {
     obtenerDatosPaciente();
     obtenerObraSocial();
   }, []);
+
+  useEffect(() => {
+    if (selectedDate) {
+      const formattedDate = format(selectedDate, "yyyy-MM-dd");
+  
+      // Filtrar los turnos por la fecha seleccionada
+      const turnosFiltrados = originalTurnos.filter(
+        (turno) => format(new Date(turno.fechaInicio), "yyyy-MM-dd") === formattedDate
+      );
+  
+      console.log("Turnos filtrados para la fecha seleccionada:", turnosFiltrados);
+  
+      setTurnosDisponibles(turnosFiltrados);
+    } else {
+      // Si no hay fecha seleccionada, mostrar todos los turnos disponibles
+      // Puedes ajustar esto según tu lógica exacta
+      setTurnosDisponibles(originalTurnos);
+    }
+  }, [selectedDate, originalTurnos]);
+  
 
   return (
     <>
@@ -365,7 +389,6 @@ const TurnosPage = () => {
             </Card>
           </Col>
 
-          {/* Paso 2 */}
           {showStepTwo && (
             <>
               <Col md={3} className="mt-4">
@@ -373,45 +396,42 @@ const TurnosPage = () => {
                   <Card.Body>
                     <h5>Paso 2 - Elige el turno</h5>
                     <Calendar
-                      onChange={handleDateChange}
-                      value={selectedDate}
                       className="mb-3"
+                      onChange={(date) => setSelectedDate(date)}
                     />
                   </Card.Body>
                 </Card>
               </Col>
 
-              {timesVisible && (
-                <Col md={3} className="mt-4">
-                  <Card>
-                    <Card.Header>Horarios disponibles</Card.Header>
-                    <Card.Body>
-                      <div className="table-container">
-                        <table className="table table-striped">
-                          <thead>
-                            <tr>
-                              <th>Hora</th>
-                              <th>Acción</th>
+              <Col md={4} className="mt-4">
+                <Card>
+                  <Card.Header>Turnos Disponibles</Card.Header>
+                  <Card.Body>
+                    <div className="table-container">
+                      <table className="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>Fecha</th>
+                            <th>Acción</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {turnosDisponibles.map((turno, index) => (
+                            <tr key={index}>
+                              <td>{turno.fechaInicio}</td>
+                              <td className="text-end">
+                                <Button variant="primary" size="sm">
+                                  Reservar Turno
+                                </Button>
+                              </td>
                             </tr>
-                          </thead>
-                          <tbody>
-                            {availableTimes.map((timeSlot) => (
-                              <tr key={timeSlot.id}>
-                                <td>{timeSlot.time}</td>
-                                <td>
-                                  <Button variant="primary" size="sm">
-                                    Reservar Turno
-                                  </Button>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              )}
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
             </>
           )}
         </Row>
